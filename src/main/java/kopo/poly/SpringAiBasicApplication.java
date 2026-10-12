@@ -2,8 +2,10 @@ package kopo.poly;
 
 import kopo.poly.dto.NlpDTO;
 import kopo.poly.dto.OcrDTO;
+import kopo.poly.dto.StudentDTO;
 import kopo.poly.service.INlpService;
 import kopo.poly.service.IOcrService;
+import kopo.poly.service.IStudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +23,8 @@ public class SpringAiBasicApplication implements CommandLineRunner {
 
     private final INlpService nlpService;
 
+    private final IStudentService studentService;
+
     public static void main(String[] args) {
 
         SpringApplication.run(SpringAiBasicApplication.class, args);
@@ -31,50 +35,107 @@ public class SpringAiBasicApplication implements CommandLineRunner {
 
         log.info("자바 프로그래밍 시작!!");
 
-        String filePath = "image";
-        String fileName = "sample01.jpg.png";
 
-        OcrDTO pDTO = new OcrDTO();
 
-        pDTO.setFilePath(filePath);
-        pDTO.setFileName(fileName);
+//        String filePath = "image";
+//        String fileName = "sample01.jpg.png";
+//
+//        OcrDTO pDTO = new OcrDTO();
+//
+//        pDTO.setFilePath(filePath);
+//        pDTO.setFileName(fileName);
+//
+//        OcrDTO rDTO = ocrService.getReadforImageText(pDTO);
+//
+//        String result = rDTO.getResult();
+//
+//        log.info("인식된 문자열");
+//        log.info(result);
+//
+//        log.info("-----------------------------------------------------");
+//        NlpDTO nlpDTO = nlpService.getPlainText(result);
+//        log.info("형태소별 품사 결과" + nlpDTO.getResult());
+//
+//        nlpDTO = nlpService.getNouns(result);
+//
+//        List<String> nouns = nlpDTO.getNouns();
+//
+//        Set<String> distinct = new HashSet<>(nouns);
+//
+//        log.info("중복 제거 수행 전 단어 수 : ", nouns.size());
+//        log.info("중복 제거 수행 후 단어 수 : " + distinct.size());
+//
+//        Map<String, Integer> rMap = new HashMap<>();
+//
+//        for (String s : distinct) {
+//            int count = Collections.frequency(nouns, s);
+//            rMap.put(s, count);
+//
+//            log.info(s + " : " + count);
+//        }
+//
+//        List<Map.Entry<String, Integer>> sortResult = new LinkedList<>(rMap.entrySet());
+//
+//        Collections.sort(sortResult, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+//
+//        log.info("가장 많이 사용된 단어는? : " + sortResult);
+//
+//        log.info("자바 프로그래밍 종료!!");
 
-        OcrDTO rDTO = ocrService.getReadforImageText(pDTO);
+//
+//    }
+//    }
+        StudentDTO pDTO;
+        List<StudentDTO> rList;
 
-        String result = rDTO.getResult();
+        pDTO = new StudentDTO();
 
-        log.info("인식된 문자열");
-        log.info(result);
+        pDTO.setUserId("Pined1972");
+        pDTO.setUserName("Pined");
+        pDTO.setEmail("Pined97@kopo.ac.kr");
+        pDTO.setAddrail("서울");
 
-        log.info("-----------------------------------------------------");
-        NlpDTO nlpDTO = nlpService.getPlainText(result);
-        log.info("형태소별 품사 결과" + nlpDTO.getResult());
+        rList = studentService.insertStudent(pDTO);
 
-        nlpDTO = nlpService.getNouns(result);
+            rList.forEach(dto -> {
+                log.info("DB에 저장된 아이디 : " + dto.getUserId());
+                log.info("DB에 저장된 이름: " + dto.getUserName());
+                log.info("DB에 저장된 이메일: " + dto.getEmail());
+                log.info("DB에 저장된 주소: " + dto.getAddrail());
+        });
 
-        List<String> nouns = nlpDTO.getNouns();
+        pDTO = new StudentDTO();
 
-        Set<String> distinct = new HashSet<>(nouns);
+        pDTO.setUserId("Pined1972");
+        pDTO.setUserName("Pined_수정");
+        pDTO.setEmail("Pined97@kopo.ac.kr_수정");
+        pDTO.setAddrail("서울_수정");
 
-        log.info("중복 제거 수행 전 단어 수 : ", nouns.size());
-        log.info("중복 제거 수행 후 단어 수 : " + distinct.size());
+        rList = studentService.updateStudent(pDTO);
 
-        Map<String, Integer> rMap = new HashMap<>();
+        rList.forEach(dto -> {
+            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+            log.info("DB에 저장된 이름 : " + dto.getUserName());
+            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+            log.info("DB에 저장된 주소 : " + dto.getAddrail());
+        });
 
-        for (String s : distinct) {
-            int count = Collections.frequency(nouns, s);
-            rMap.put(s, count);
+        pDTO = new StudentDTO();
 
-            log.info(s + " : " + count);
-        }
+        pDTO.setUserId("Pined97");
 
-        List<Map.Entry<String, Integer>> sortResult = new LinkedList<>(rMap.entrySet());
+        rList = studentService.deleteStudent(pDTO);
 
-        Collections.sort(sortResult, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
-
-        log.info("가장 많이 사용된 단어는? : " + sortResult);
+        rList.forEach(dto -> {
+            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+            log.info("DB에 저장된 이름 : " + dto.getUserName());
+            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+            log.info("DB에 저장된 주소 : " + dto.getAddrail());
+        });
 
         log.info("자바 프로그래밍 종료!!");
 
+        }
     }
-}
+
+

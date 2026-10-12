@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "_//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kopo.poly.mapper.IStudentMapper">
+
+    <insert id="insertStudent" parameterType="StudentDTO">
+        INSERT INTO STUDENT
+            (USER_ID, USER_NAME, EMAIL, ADDRAIL)
+        VALUES (#{userId}, #{userName}, #{email}, #{addrail})
+    </insert>
+
+    <select id="getStudentList" resultType="StudentDTO">
+        SELECT USER_ID, USER_NAME, EMAIL, ADDRAIL
+        FROM STUDENT
+        ORDER BY USER_NAME DESC
+    </select>
+
+    <select id="getStudent" resultType="StudentDTO">
+        SELECT USER_ID, USER_NAME, EMAIL, ADDRAIL
+        FROM STUDENT
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <update id="updateStudent" parameterType="StudentDTO">
+        UPDATE STUDENT
+        SET USER_NAME = #{userName},
+            EMAIL     = #{email},
+            ADDRAIL   = #{addrail}
+
+        WHERE USER_ID = #{userId}
+
+
+    </update>
+
+    <delete id="deleteStudent" parameterType="StudentDTO">
+        DELETE
+        FROM STUDENT
+        WHERE USER_ID = #{userId}
+    </delete>
+
+
+</mapper>
